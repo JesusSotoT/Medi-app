@@ -1,0 +1,45 @@
+SCRIPT
+-- MySQL Workbench Synchronization
+-- Generated: 2015-07-30 11:29
+-- Model: Viajo México - Modelo General
+-- Version: 1.0
+-- Project: MVC Lite 3.x
+-- Author: Daniel Lepe 2014
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+ALTER TABLE `administradores` 
+DROP FOREIGN KEY `fk_administradores_departamentos1`;
+
+ALTER TABLE `administradores` 
+DROP COLUMN `departamentos_id`,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`id`),
+DROP INDEX `fk_administradores_departamentos1_idx` ;
+
+CREATE TABLE IF NOT EXISTS `departamentos_has_administradores` (
+  `departamentos_id` INT(11) NOT NULL,
+  `administradores_id` INT(11) NOT NULL,
+  PRIMARY KEY (`departamentos_id`, `administradores_id`),
+  INDEX `fk_departamentos_has_administradores_administradores1_idx` (`administradores_id` ASC),
+  INDEX `fk_departamentos_has_administradores_departamentos1_idx` (`departamentos_id` ASC),
+  CONSTRAINT `fk_departamentos_has_administradores_departamentos1`
+    FOREIGN KEY (`departamentos_id`)
+    REFERENCES `departamentos` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_departamentos_has_administradores_administradores1`
+    FOREIGN KEY (`administradores_id`)
+    REFERENCES `administradores` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

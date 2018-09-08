@@ -1,0 +1,120 @@
+[28-Jun-2016 13:41:37 America/Mexico_City] PHP Notice:  Undefined index: registro in /home/medicheck/public_html/Core/Controllers/HomeController.php on line 22
+[28-Jun-2016 13:45:39 America/Mexico_City] PHP Notice:  Undefined index: registro in /home/medicheck/public_html/Core/Controllers/HomeController.php on line 22
+[28-Jun-2016 13:51:43 America/Mexico_City] PHP Notice:  Undefined index: registro in /home/medicheck/public_html/Core/Controllers/HomeController.php on line 22
+[28-Jun-2016 13:54:03 America/Mexico_City] PHP Notice:  Undefined index: registro in /home/medicheck/public_html/Core/Controllers/HomeController.php on line 22
+[28-Jun-2016 13:55:24 America/Mexico_City] PHP Notice:  Undefined index: registro in /home/medicheck/public_html/Core/Controllers/HomeController.php on line 22
+[28-Jun-2016 13:57:18 America/Mexico_City] PHP Notice:  Undefined index: registro in /home/medicheck/public_html/Core/Controllers/HomeController.php on line 22
+[28-Jun-2016 13:59:27 America/Mexico_City] PHP Notice:  Undefined index: registro in /home/medicheck/public_html/Core/Controllers/HomeController.php on line 22
+[28-Jun-2016 14:15:12 America/Mexico_City] PHP Notice:  Undefined index: registro in /home/medicheck/public_html/Core/Controllers/HomeController.php on line 22
+[05-Apr-2017 17:24:41 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 9
+[05-Apr-2017 17:24:41 UTC] PHP Warning:  mysqli_data_seek() expects parameter 1 to be mysqli_result, null given in /home/medicheck/public_html/busqueda.php on line 11
+[05-Apr-2017 18:01:24 UTC] PHP Warning:  mysqli_connect(): (HY000/2005): Unknown MySQL server host 'medicheckapp.com:3306' (0) in /home/medicheck/public_html/conexion.php on line 4
+[05-Apr-2017 18:03:33 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:06:03 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:10:32 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:10:59 UTC] PHP Warning:  mysql_select_db() expects parameter 2 to be resource, object given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:11:36 UTC] PHP Warning:  mysql_select_db() expects parameter 2 to be resource, object given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:11:36 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:11:36 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:11:36 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:12:29 UTC] PHP Warning:  mysql_select_db() expects parameter 2 to be resource, object given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:12:29 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:12:29 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:12:29 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:12:34 UTC] PHP Warning:  mysql_select_db() expects parameter 2 to be resource, object given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:12:34 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:12:34 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:12:34 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:13:48 UTC] PHP Warning:  mysql_select_db() expects parameter 2 to be resource, object given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:13:48 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:13:48 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:13:48 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:14:28 UTC] PHP Warning:  mysql_select_db() expects parameter 2 to be resource, object given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:14:28 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:14:28 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:14:28 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:15:08 UTC] PHP Warning:  mysql_select_db() expects parameter 2 to be resource, object given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:15:08 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:15:08 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:15:08 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:15:58 UTC] PHP Warning:  mysqli_connect(): (HY000/2005): Unknown MySQL server host 'medicheckapp.com:2083' (0) in /home/medicheck/public_html/conexion.php on line 4
+[05-Apr-2017 18:16:47 UTC] PHP Warning:  mysqli_connect(): (HY000/2005): Unknown MySQL server host 'localhost:3306' (0) in /home/medicheck/public_html/conexion.php on line 4
+[05-Apr-2017 18:17:11 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:17:11 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:17:11 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:17:11 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:17:50 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:17:50 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:17:50 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:17:50 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:17:54 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:17:54 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:17:54 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:17:54 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:18:22 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:18:22 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:18:22 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:18:22 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:18:26 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:18:26 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:18:26 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:18:26 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:20:54 UTC] PHP Parse error:  syntax error, unexpected 'mysqli_select_db' (T_STRING) in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:21:29 UTC] PHP Parse error:  syntax error, unexpected 'mysqli_select_db' (T_STRING) in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:27:16 UTC] PHP Warning:  mysqli_connect(): (HY000/2005): Unknown MySQL server host 'mysql.medicheckapp.com' (0) in /home/medicheck/public_html/conexion.php on line 4
+[05-Apr-2017 18:27:16 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:27:16 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, boolean given in /home/medicheck/public_html/busqueda.php on line 7
+[05-Apr-2017 18:27:16 UTC] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 20
+[05-Apr-2017 18:27:16 UTC] PHP Warning:  mysql_free_result() expects parameter 1 to be resource, null given in /home/medicheck/public_html/busqueda.php on line 34
+[05-Apr-2017 18:28:35 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:41:14 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:41:16 UTC] PHP Warning:  mysqli_select_db() expects parameter 1 to be mysqli, string given in /home/medicheck/public_html/conexion.php on line 9
+[05-Apr-2017 18:41:36 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/medicheck/public_html/conexion.php on line 14
+[05-Apr-2017 18:43:38 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/medicheck/public_html/conexion.php on line 14
+[05-Apr-2017 18:43:43 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/medicheck/public_html/conexion.php on line 14
+[05-Apr-2017 18:44:05 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/medicheck/public_html/conexion.php on line 14
+[05-Apr-2017 18:44:35 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/medicheck/public_html/conexion.php on line 14
+[06-Apr-2017 00:04:58 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/medicheck/public_html/conexion.php on line 14
+[06-Apr-2017 00:06:00 UTC] PHP Parse error:  syntax error, unexpected '$link' (T_VARIABLE) in /home/medicheck/public_html/conexion.php on line 18
+[06-Apr-2017 00:10:53 UTC] PHP Parse error:  syntax error, unexpected '<' in /home/medicheck/public_html/conexion.php on line 24
+[06-Apr-2017 00:16:22 UTC] PHP Warning:  mysql_query() expects parameter 2 to be resource, object given in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:19:50 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:19:50 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:22:38 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2005): Unknown MySQL server host '88.198.19.168:3306' (0) in /home/medicheck/public_html/conexion.php on line 2
+[06-Apr-2017 00:22:38 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:22:38 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:23:40 UTC] PHP Warning:  mysqli::mysqli(): (28000/1045): Access denied for user 'medichec_admin'@'whm8.sustam.com' (using password: NO) in /home/medicheck/public_html/conexion.php on line 2
+[06-Apr-2017 00:23:40 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:23:40 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:23:55 UTC] PHP Warning:  mysqli::mysqli(): (28000/1045): Access denied for user 'medichec_admin'@'whm8.sustam.com' (using password: NO) in /home/medicheck/public_html/conexion.php on line 2
+[06-Apr-2017 00:23:55 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:23:55 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:24:30 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:24:30 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:26:09 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:26:09 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:26:50 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:26:50 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:27:23 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2005): Unknown MySQL server host 'localhost:2083' (0) in /home/medicheck/public_html/conexion.php on line 2
+[06-Apr-2017 00:27:23 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:27:23 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:27:50 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2005): Unknown MySQL server host 'localhost:3306' (0) in /home/medicheck/public_html/conexion.php on line 2
+[06-Apr-2017 00:27:50 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:27:50 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:28:24 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2005): Unknown MySQL server host 'http://medicheckapp.com' (0) in /home/medicheck/public_html/conexion.php on line 2
+[06-Apr-2017 00:28:24 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:28:24 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:28:36 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[06-Apr-2017 00:28:36 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[11-Apr-2017 15:57:15 UTC] PHP Warning:  mysql_query(): Access denied for user 'medicheck'@'localhost' (using password: NO) in /home/medicheck/public_html/conexion.php on line 8
+[11-Apr-2017 15:57:15 UTC] PHP Warning:  mysql_query(): A link to the server could not be established in /home/medicheck/public_html/conexion.php on line 8
+[01-Jun-2017 16:50:18 UTC] PHP Parse error:  syntax error, unexpected 'Contacto' (T_STRING) in /home/medicheck/public_html/sendbymail2.php on line 6
+[01-Jun-2017 17:43:24 UTC] PHP Parse error:  syntax error, unexpected 'Contacto' (T_STRING) in /home/medicheck/public_html/sendbymail2.php on line 6
+[09-Jun-2017 14:44:03 UTC] PHP Parse error:  syntax error, unexpected 'index' (T_STRING), expecting ',' or ';' in /home/medicheck/public_html/sendbymail.php on line 39
+[09-Jun-2017 14:44:28 UTC] PHP Parse error:  syntax error, unexpected 'index' (T_STRING), expecting ',' or ';' in /home/medicheck/public_html/sendbymail.php on line 39
+[09-Jun-2017 14:45:19 UTC] PHP Parse error:  syntax error, unexpected 'Tu' (T_STRING), expecting ',' or ';' in /home/medicheck/public_html/sendbymail.php on line 39
+[09-Jun-2017 19:20:49 UTC] PHP Parse error:  syntax error, unexpected '=' in /home/medicheck/public_html/sendbymail2.php on line 30
+[09-Jun-2017 19:22:04 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/medicheck/public_html/sendbymail2.php on line 31
+[12-Jun-2017 14:11:58 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/medicheck/public_html/sendbymail2.php on line 31
+[12-Jun-2017 14:55:37 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/medicheck/public_html/sendbymail.php on line 40
+[15-Sep-2017 15:26:28 UTC] PHP Parse error:  syntax error, unexpected 'Contacto' (T_STRING) in /home/medicheck/public_html/sendbymail3.php on line 6

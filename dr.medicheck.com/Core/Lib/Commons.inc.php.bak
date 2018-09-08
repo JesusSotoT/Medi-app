@@ -1,0 +1,431 @@
+<?php
+
+/**
+ * Commons Abstract Class
+ *
+ * Establece las funciones de comúnes dentro de todas
+ * las clases primeras al ser heredadas por los constructores
+ * de configuración.
+ *
+ * @Author Daniel Lepe 2014
+ * @Version 1.0
+ */
+
+abstract class Commons {
+
+	public static $context = NULL;
+
+	public function is_post() {
+		return (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST');
+	}
+
+	public function is_get() {
+		return (strtoupper($_SERVER['REQUEST_METHOD']) == 'GET');
+	}
+
+	public function is_ajax() {
+		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Set 404
+	 *
+	 *	Envia los parámetros del header para archivo no encontrado, y en caso
+	 * de que se haya iniciado la clase de VIEW, manda el archivo 404 del template.
+	 *
+	 * Ahora permite que se le envie un mensaje especial a la salida.
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.3
+	 *
+	 */
+
+	public function set_404( $msg = null) {
+		if (class_exists('View') and $this -> is_get()) {
+			View::render_404($msg, !$this -> is_ajax());
+		} else {
+			header("HTTP/1.0 404 Not Found");
+		}
+
+		die();
+	}
+
+	/**
+	 * Load
+	 *
+	 *  Crea un objeto y clase definidas.
+	 *
+	 * El primer parámetro es obligatorio y debe ser el nombre del archivo Inc, y
+	 * coincidir
+	 * con el nombre de la clase, por ejemplo "Session.inc.php" y la clase "Session".
+	 *
+	 * El segundo parámetro es opcional y corresponde a la ubicación, por defecto
+	 * será raíz, done
+	 * se estima que deban ir todos los plugins que puedan ser accedidos por
+	 * controlador, modelos y vistas, como
+	 * el caso de sesion.
+	 *
+	 * @author Daniel Lepe 2014
+	 * @version 1.0
+	 * */
+
+	public function load($class_name, $class_loc = null, $subs = null, $prefix = '.inc') {
+
+		$object_name = ucfirst(strtolower($class_name));
+
+		$filename = APP::path($class_loc, $subs) . $class_name . $prefix . ".php";
+
+		if (file_exists($filename)) {
+
+			include_once ($filename);
+
+			if ($prefix != '.inc') {
+				$class_name .= ucfirst(strtolower($prefix));
+			}
+
+			if (class_exists($class_name)) {
+				$this -> {$object_name} = new $class_name;
+			} else {
+				die(sprintf('Library Found but Class names is missmatch! [%s]', $class_name));
+			}
+
+		} else {
+
+			die(sprintf('Library Not Found! [%s]', $filename));
+
+		}
+	}
+
+	/**
+	 * Path
+	 *
+	 * Establece la ubicación física de un archivio a partir de la ubicación
+	 * del archivo Core.
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.2
+	 */
+	static public function path($lib = null, $subs = array()) {
+		if (!is_null($lib))
+			$lib .= DIRECTORY_SEPARATOR;
+
+		if (is_array($subs)) {
+			foreach ($subs as $subfolder) {
+				$lib .= $subfolder . DIRECTORY_SEPARATOR;
+			}
+		}
+
+		return (realpath(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . $lib;
+	}
+
+  static public function temp($lib = null, $subs = array()) {
+
+		if (is_array($subs)) {
+			foreach ($subs as $subfolder) {
+				$lib .= $subfolder . DIRECTORY_SEPARATOR;
+			}
+		}
+
+    $return = (realpath(dirname(dirname(dirname(__FILE__))))) . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . $lib;
+
+    return $return;
+	}
+
+	/**
+	 * Go To
+	 *
+	 * Redirecciona al usuario a una URL distinta, limpiando la posibilidad
+	 * de ejecución de código aposteriori.
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.0
+	 */
+
+	public function go_to($url) {
+		if (empty($url))
+			$this -> set_404();
+		header('location: ' . $this -> url($url));
+		die();
+	}
+
+	/**
+	 * Referer
+	 *
+	 * Obtiene el Referente de la página actual
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.0
+	 */
+
+	public function referer() {
+
+		if (!empty($_SERVER['HTTP_REFERER']))
+			return $_SERVER['HTTP_REFERER'];
+
+		return false;
+	}
+
+	/**
+	 * Referrer
+	 *
+	 * Obtiene el Referente de la página actual ()
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.0
+	 */
+
+	public function referrer() {
+
+		return $this -> referer();
+
+	}
+
+	/**
+	 * URL
+	 *
+	 * Funcion que permite la creación de URL siguiendo el modo
+	 * [URLBase]/controlador/accion/parametros
+	 *
+	 * El primer parámetro puede ser un string o un array que indique
+	 * el objeto que se desea alcanzar en la URL. El segundo parámetro
+	 * es un booleano que determina si la liga se incluirá con todo
+	 * y el nombre del servidor
+	 *
+	 * BUG Corregido | Ahora elimina las diagonales dobles.
+	 *
+	 * UPDATE | Ahora permite generar ligas en funcion del lenguaje seleccionado cuando exista dicha configuración.
+	 * UPDATE | Ahora, al pasarle el parámetro $this -> request lo valida con la APP para generar un request completo.
+	 * UPDATE | 1.5 Ahora, al pasarle bajo el formato de Array una URL una ruta
+	 * UPDATE | 1.5 Ahora, al pasarle bajo el formato de Array una URL una ruta
+	 *
+	 * El parametro $treat_as_media en  verdadero considera que la URL es un medio en el servidor, por lo que no se Agrega
+	 * el parámetro index.php?r=. (Este parámetro sólo es funcional para $urls en formato STRING).
+	 *
+	 * @Author Daniel Lepe
+	 * @Version 1.6
+	 * @Date   11/08/2015
+	 */
+
+	public function url($sRout = array(), $printServerName = false, $addRefresher = false, $treat_as_media = false) {
+
+		// INIT
+		$prettyURL = (isset(APP::$allow_pretty_url))? APP::$allow_pretty_url : true;
+
+		$serverName = null;
+
+		if ($printServerName) {
+			$serverName = '//' . ($_SERVER['HTTP_HOST']);
+		}
+
+		$dbStr = null;
+
+		if(($addRefresher and $prettyURL) and is_array($sRout)){
+			$dbStr = '?_=' . uniqid();
+		} else if(!$prettyURL and $addRefresher){
+			$dbStr = '&_=' . uniqid();
+		}
+
+    // BOOTSTRAP PARA REQUEST
+    if(is_array($sRout) and $sRout == APP::$request_proccessed){
+        // ASIGNACION
+        $sRout = APP::$request_full_array;
+
+        // FORMATO DE PARAMS
+        if(isset($sRout['getAttrs']) and !empty($sRout['getAttrs'])){
+            foreach($sRout['getAttrs'] as $p){
+                $sRout[] = $p;
+            }
+            unset($sRout['getAttrs']);
+        }
+    }
+
+    // PROCESA ARREGLO DE URL EXPLÍCITO (MEJOR)
+		if (is_array($sRout)) {
+
+			$str = "";
+
+			if (isset($sRout['context'])) {
+				if(is_string($sRout['context'])){
+					$str .= strtolower(trim($sRout['context'])) . '/';
+				}
+				unset($sRout['context']);
+			} else {
+				if (!is_null(Commons::$context)) {
+					$str .= strtolower(trim(Commons::$context)) . '/';
+				}
+			}
+
+      if(isset(AppConfig::$languagesCFG)
+         and AppConfig::$languagesCFG['allow_translations']){
+          if (isset($sRout['lang'])) {
+              if(is_string($sRout['lang'])){
+                  $str .= strtolower(trim($sRout['lang'])) . '/';
+              }
+              unset($sRout['lang']);
+          } else {
+              if (!is_null(Translate::$selectedLang['prefix'])) {
+                  $str .= strtolower(Translate::$selectedLang['prefix']) . '/';
+              }
+          }
+      }
+
+			if (isset($sRout['controller'])) {
+				$str .= strtolower(trim($sRout['controller'])) . '/';
+				unset($sRout['controller']);
+			}
+
+			if (isset($sRout['action'])) {
+				$str .= strtolower(trim($sRout['action'])) . '/';
+				unset($sRout['action']);
+			}
+
+			foreach ($sRout as $param) {
+				if (!is_array($param)) {
+					$str .= $this -> url_style($param) . '/' ;
+				} else {
+					foreach ($param as $k => $p) {
+						$param[$k] = $this -> url_style($p);
+					}
+				}
+			}
+
+			$str = preg_replace('/[ ]|\/$/', '', $str);
+
+			$str = preg_replace('/\/\//', '/', $str);
+
+			// NON PRETTY URL FIX
+			if(!$prettyURL) {
+				$str = preg_replace('/^\//', null, $str);
+				$str = "index.php?r=" . $str;
+			}
+
+			// breakpoint($serverName . AppConfig::$urlBase . $str . $dbStr."array");
+			return $serverName . AppConfig::$urlBase . $str . $dbStr;
+
+		}
+		elseif (is_string($sRout)) {
+
+			if (!preg_match('/^http[s]{0,1}\:/', $sRout)) {
+				$sUrl = AppConfig::$urlBase;
+				if(!$prettyURL and !$treat_as_media){
+					$sUrl .= 'index.php?r=';
+				}
+			} else {
+				$sUrl = '';
+			}
+
+			$final_str = $sUrl . $sRout;
+
+			// Remueve diagonales finales
+			$final_str = preg_replace('/\/$/', NULL, $final_str);
+
+			// Remueve diagonales dobles
+			$final_str = preg_replace('/\/+/', '/', $final_str);
+
+			// Pero si se han removido las dobles diagonales http:// o https:// las
+			// reinserta.
+			$final_str = preg_replace('/\:\//', '://', $final_str);
+			$response = $serverName . $final_str . $dbStr;
+
+			return ($response);
+		}
+
+	}
+
+	/**
+	 * url_style
+	 *
+	 * Devuelve un string estilo url según el concepto del MVC Lite
+	 *
+	 * @Author Daniel Lepe
+	 * @Version 1.5
+	 * @Date   17/11/2015
+	 */
+
+	public function url_style($str){
+		$str = urlencode($this -> supress_non_alphanumeric(trim($str)));
+		$str = strtolower(trim($str));
+		return $str;
+	}
+
+	/**
+	 * supress_non_alphanumeric
+	 *
+	 * Devuelve un string sin los caracteres no latinos. Útil para URLS y tokens.
+	 *
+	 * @Author Daniel Lepe
+	 * @Version 1.5
+	 * @Date   17/11/2015
+	 */
+
+	public function supress_non_alphanumeric($str){
+		$from 	= array('á', 'Á',
+					   	'é', 'É',
+						'í', 'Í',
+						'ó', 'Ó',
+						'ú', 'Ú',
+						'ü', 'Ü',
+						'ñ', 'Ñ',
+						'¿', '?',
+						'¡', '!',
+						'#', '*',
+						'<', '>',
+						'(', ')',
+						'[', ']',
+					   );
+		$to		= array('a', 'A',
+					   	'e', 'E',
+						'i', 'I',
+						'o', 'O',
+						'u', 'U',
+						'u', 'U',
+						'n', 'N',
+						'', '',
+						'', '',
+						'', '',
+						'', '',
+						'', '',
+						'', '',
+					   );
+		return str_replace($from,$to,$str);
+	}
+
+	/**
+	 * hashify
+	 *
+	 * Convierte cualquier cadena a Hash, con el SecuritySalt definido, si es que existe, de otra forma, toma el path normal.
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.0
+	 */
+
+	public function hashify($string) {
+		if (isset(AppConfig::$securitySalt)) {
+			$securitySalt = AppConfig::$securitySalt;
+		} else {
+			$securitySalt = $this -> path();
+		}
+
+		if (!is_string($string))
+			die('Solo se puede pasar a hashify un string');
+
+		return md5($string . $securitySalt);
+	}
+
+    // GET LANG
+    public function get_lang(){
+        if(class_exists('Translate')){
+            return (Translate::$selectedLang['prefix']);
+        } else {
+            return false;
+        }
+    }
+
+    // IS TRANSLATABLE
+    public function is_translatable(){
+        return class_exists('Translate');
+    }
+}

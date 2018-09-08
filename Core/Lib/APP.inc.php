@@ -1,0 +1,700 @@
+<?php
+
+class APP extends AppConfig {
+
+	private $data = array ( );
+	private $params = array ( );
+
+	private $controller;
+	private $action;
+	private $getAttrs;
+
+  public static $language = array( );
+  public static $request_proccessed = null;       // MANTIENE LA CONFIGURACION TOTAL DEL STRING CONSTRUCTOR DEL REQUEST
+  public static $request_full_array = array();    // MANTIENE LA CONFIGURACION TOTAL DEL ARREGLO CONSTRUCTOR DEL REQUEST
+
+	public function __construct ( ) {
+		self::_low_profile_settings();
+		$this -> _set_enviroment ( );
+	}
+
+	static function _low_profile_settings () {
+		// INIT
+		$time_limit = (isset(self::$time_limit))? self::$time_limit : 5;
+		$memory_limit = (isset(self::$memory_limit))? self::$memory_limit : "150M";
+		$timezone = (isset(self::$timezone))? self::$timezone : "America/Mexico_City";
+
+		// DEBUGGING
+		if ( self::$debug) {
+			// E_ALL ^ E_NOTICE
+			error_reporting ( E_ALL );
+		} else {
+			error_reporting ( 0 );
+		}
+
+		// PROC
+		set_time_limit ( $time_limit );
+		ini_set ( "memory_limit", $memory_limit );
+		date_default_timezone_set ( $timezone );
+		setlocale ( LC_TIME, 'spanish' );
+
+		// Separador de directorios
+		DEFINE ( 'DS', DIRECTORY_SEPARATOR );
+		DEFINE ( 'HTML_EOL', '<br/>' );
+	}
+
+	/*
+	 * Exec
+	 *
+	 *  Funcion secuenciadora principal, encargada de controlar el MVC general.
+	 *
+	 * Daniel Lepe 2014
+	 * */
+	public function exec ( ) {
+
+		$this -> View = new View ( );
+
+		// Carga Controlador APP
+		$this -> _load_app_controller ( );
+
+		// Carga Controlador
+		$this -> _load_controller ( );
+
+		// Entorno de Controlador
+		$this -> _controller_enviroment ( );
+
+		// Load Action
+		$this -> _load_action ( );
+
+		// Carga variables en View para los Templates
+		$this -> build_templates ( );
+
+		// Conectar controlador con con vistas
+		$this -> _load_templates ( );
+
+    // POST APP USES
+    $this -> _post_app_uses();
+	}
+
+  // _post_app_uses()
+  private function _post_app_uses(){
+      if(class_exists("Translate"))
+          Translate::print_untranslated();
+
+      echo $this -> View -> contents;
+
+  }
+
+  /**
+	 * _load_app_controller
+	 *
+	 * Carga las actividades que se requieran al finalizar la APP
+	 *
+	 **/
+	public function _load_app_controller ( ) {
+
+		if(!is_null(self::$context)){
+
+			// Carga del controlador de herencias basado en contexto
+			$filename = self::path ( 'Controllers', array(ucfirst(strtolower(self::$context))) ) . 'AppController.php';
+
+			if ( file_exists ( $filename ) ) {
+				include_once $filename;
+			}
+
+		} else {
+
+			// Carga del controlador de herencias, (APP)
+			$filename = self::path ( 'Controllers' ) . 'AppController.php';
+
+			if ( file_exists ( $filename ) ) {
+				include_once $filename;
+			}
+
+		}
+
+	}
+
+	/**
+	 * Build Themes
+	 *
+	 *  Manda variables necesarias para todos los templates.
+	 *
+	 * NOTA: No confundir con las vistas, estas deberán usar CONTROLLER::SET();
+	 *
+	 * @Author Daniel Lepe 2014
+	 *
+	 * */
+	public function build_templates ( ) {
+
+		// Carga los Textuales.
+		$this -> _templates_build_textuals();
+
+		// Carga los Helpers, si los hay.
+		$this -> _templates_build_helpers();
+
+		// Construye los objetos de los Componentes, si los hay.
+		$this -> _templates_build_component_objects();
+
+		// Consturye el Bridge Para las vistas
+		$this -> _build_bridge_and_pagination();
+
+		// Rellena los Helpers
+		$this -> _populate_helpers();
+	}
+
+	/** Populate Helpers
+	 *
+	 *  Pasa a los helpers algunas variables globales de la APLICACION.
+	 *
+	 * @Author Daniel Lepe
+	 * @Version 1.0
+	 */
+  private function _populate_helpers(){
+
+		if(isset($this -> {$this -> controller} -> helpers)){
+			foreach($this -> {$this -> controller} -> helpers as $h){
+
+				// DATA ASSIGNMENT
+				$this -> View -> {ucfirst(strtolower($h))} -> request 		= $this -> request;
+				$this -> View -> {ucfirst(strtolower($h))} -> controller 	= $this -> controller;
+				$this -> View -> {ucfirst(strtolower($h))} -> action 			= $this -> action;
+				$this -> View -> {ucfirst(strtolower($h))} -> get					= $this -> getAttrs;
+
+				// breakpoint($this);
+
+				// COMPONTENTS LOOP
+				foreach($this -> View -> Components as $obj => $c){
+					$this -> View -> {ucfirst(strtolower($h))} -> {$obj} = $c;
+				}
+			}
+
+      // ADDS REQUEST TO HTML DEFAULT HELPER
+      $this -> View -> {ucfirst(strtolower('HTML'))} -> request 		= $this -> request;
+			$this -> View -> {ucfirst(strtolower('HTML'))} -> controller 	= $this -> controller;
+			$this -> View -> {ucfirst(strtolower('HTML'))} -> action 			= $this -> action;
+			$this -> View -> {ucfirst(strtolower('HTML'))} -> get					= $this -> getAttrs;
+		}
+	 }
+
+	/**
+	 * Build Bridge and Pagination
+	 *
+	 *  Construye el objeto _bridge, sobre el se deberàn pasar datos desde los modelos as las vistas.
+	 *
+	 * Version 1.4
+	 * Incluye el pase de paginado a las vistas.
+	 *
+	 * Actualmente se deberán pasar únicamente los datos del modelo MVC.
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.4
+	 */
+	private function _build_bridge_and_pagination ( ){
+		if(!isset($this -> {$this -> controller} -> models))
+			return null;
+
+		if(!is_array($this -> {$this -> controller} -> models))
+			die('$models debe ser array');
+
+		foreach($this -> {$this -> controller} -> models as $m){
+			// $this -> {$this -> controller} -> {ucfirst(strtolower($m))} -> schemas;
+			// $this -> {$this -> controller} -> {ucfirst(strtolower($m))} -> paginationCFG;
+			// $this -> View -> _bridge = new stdClass();
+			// $this -> View -> _pagination = new stdClass();
+			if(isset($this -> {$this -> controller} -> helpers)){
+				foreach($this -> {$this -> controller} -> helpers as $h){
+          // INITS
+					if(!isset($this -> View -> {ucfirst(strtolower($h))} -> _bridge))
+						$this -> View -> {ucfirst(strtolower($h))} -> _bridge = new stdClass();
+
+          if(!isset($this -> View -> {ucfirst(strtolower($h))} -> _pagination))
+						$this -> View -> {ucfirst(strtolower($h))} -> _pagination = null;
+
+          // ASSIGNMENTS
+					$this -> View -> {ucfirst(strtolower($h))} -> data = $this -> {$this -> controller} -> data;
+					$this -> View -> {ucfirst(strtolower($h))} -> _bridge -> {ucfirst(strtolower($m))} = $this -> {$this -> controller} -> {ucfirst(strtolower($m))} -> schemas;
+
+          // VALIDATES PAGINATION
+          if($this -> {$this -> controller} -> {ucfirst(strtolower($m))} -> isPaginated()){
+            if(is_null($this -> View -> {ucfirst(strtolower($h))} -> _pagination)){
+              $this -> View -> {ucfirst(strtolower($h))} -> _pagination = $this -> {$this -> controller} -> {ucfirst(strtolower($m))} -> getPaginationHeaders();
+            } else {
+              die('[ERROR_DE_PAGINADO::APP_REVIEW] Sólo debe haber un paginado por request, no puedes usar en 2 modelos distintos un paginado.');
+            }
+          }
+				}
+			}
+
+      // BOOTSTRAP FOR HTML HELPER (NOT CALLED ITSELF)
+      if(is_object($this -> View -> {ucfirst(strtolower('HTML'))})) {
+        if(!isset($this -> View -> {ucfirst(strtolower('HTML'))} -> _pagination))
+					$this -> View -> {ucfirst(strtolower('HTML'))} -> _pagination = null;
+
+        // VALIDATES PAGINATION
+        if($this -> {$this -> controller} -> {ucfirst(strtolower($m))} -> isPaginated()){
+          if(is_null($this -> View -> {ucfirst(strtolower('HTML'))} -> _pagination)){
+              $this -> View -> {ucfirst(strtolower('HTML'))} -> _pagination = $this -> {$this -> controller} -> {ucfirst(strtolower($m))} -> getPaginationHeaders();
+          } else {
+              die('[ERROR_DE_PAGINADO::APP_REVIEW] Sólo debe haber un paginado por request, no puedes usar en 2 modelos distintos un paginado.');
+          }
+        }
+      }
+		}
+	}
+
+	/**
+	 * Templates Build Component Objects
+	 *
+	 * Construye los objetos para que sea accesible cada componente en las vistas.
+	 * Depende del uso de $this -> set() en los controladores de cada componente.
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.0
+	 */
+	private function _templates_build_component_objects(){
+		$this -> View -> Components = (object) NULL;
+		if(!empty($this -> {$this -> controller} -> components) and is_array($this -> {$this -> controller} -> components)){
+			foreach($this -> {$this -> controller} -> components as $c){
+				if(!empty($this -> {$this -> controller} -> {ucfirst(strtolower($c))} -> set)){
+					$this -> View -> Components  -> {ucfirst(strtolower($c))} = (object) NULL;
+					foreach($this -> {$this -> controller} -> {ucfirst(strtolower($c)) } -> set as $obj => $values){
+						$this -> View -> Components  -> {ucfirst(strtolower($c))} -> {$obj} = (object) NULL;
+						$this -> View -> Components  -> {ucfirst(strtolower($c))} -> {$obj} = $values;
+					}
+				}
+			}
+		}
+	}
+
+	private function _templates_build_helpers(){
+		// REVISA SI HAY QUE CARGAR HELPERS
+		if(isset($this -> {$this -> controller} -> helpers)){
+
+			if(!is_array($this -> {$this -> controller} -> helpers))
+				die('$helpers debe ser un array');
+
+			foreach($this -> {$this -> controller} -> helpers as $helper){
+
+				$local = APP::path ( 'Views', array('Helpers') ) . ucfirst(strtolower($helper)) . 'Helper.php';
+
+				if(file_exists($local)){
+					$this -> View -> load($helper, 'Views', array('Helpers'), 'Helper');
+				} else {
+					$this -> View -> load($helper, 'Lib', array('View', 'Helpers'), 'Helper');
+				}
+
+			}
+
+		}
+	}
+
+	private function _templates_build_textuals(){
+		$this -> View -> root = self::$urlBase;
+
+    if(isset(self::$loadResourcesFrom) and is_string(self::$loadResourcesFrom))
+        $this -> View -> root .= self::$loadResourcesFrom . '/';
+
+    $this -> View -> name = self::$appName;
+		$this -> View -> Session = new Session ( );
+
+		$title = null;
+
+		if ( isset ( $this -> {$this -> controller} -> title ) )
+			$title = $this -> {$this -> controller} -> title . " | ";
+
+		$this -> View -> title 				= $title;
+		$this -> View -> request 			= $this -> request;
+		$this -> View -> controller 	= $this -> controller;
+		$this -> View -> action 			= $this -> action;
+		$this -> View -> get		 			= $this -> getAttrs;
+
+	}
+
+	/**
+	 * Load Templates
+	 *
+	 *  Carga la vista y el template apropiado para el controlador y su accion, en
+	 * caso de no especificar, solicita los que vienen por defecto
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.1
+	 * */
+	private function _load_templates ( ) {
+
+		// Establece Controlador
+		$this -> View -> controller = $this -> controller;
+
+		// Establece valores desde ejecución
+		$this -> View -> view = $this -> {$this -> controller} -> view;
+		$this -> View -> template = $this -> {$this -> controller} -> template;
+		$this -> View -> vars = $this -> {$this -> controller} -> set;
+		$this -> View -> templateVars = $this -> {$this -> controller} -> templateSet;
+		$this -> View -> data = $this -> {$this -> controller} -> data;
+
+		// Llama la carga de la vista
+		$this -> View -> load_view ( $this -> {$this -> controller} -> data );
+
+		// Llama la carga del template
+		$this -> View -> load_template ( );
+	}
+
+	/*
+	 * Load Action
+	 *
+	 *  Carga La acciòn del controlador de la aplicación, en caso de no existir,
+	 * manda un 404
+	 *
+	 * Version 2: Ahora manda anticipadamente los datos GET a $this -> get del controlador.
+	 *
+	 * Daniel Lepe 2014
+	 */
+	private function _load_action ( ) {
+		if ( is_null ( $this -> action ) )
+			$this -> action = self::$defaults [ 'action' ];
+
+		if ( method_exists ( $this -> {$this -> controller }, 'beforeAction' ) ) {
+			$this -> {$this -> controller} -> beforeAction ( );
+		}
+
+		if ( method_exists ( $this -> {$this -> controller },  $this -> action) ) {
+			call_user_func_array(array($this -> {$this -> controller }, $this -> action), $this -> getAttrs);
+		} else {
+			$this -> set_404 ( );
+		}
+
+		if ( method_exists ( $this -> {$this -> controller }, 'beforeTemplate' ) ) {
+			$this -> {$this -> controller} -> beforeTemplate ( );
+		}
+
+	}
+
+	/**
+	 * Build Action Name
+	 *
+	 * Construye el nombre de la Acción tomando en cuenta el posible contexto de ejecución.
+	 *
+	 * @Author Daniel Lepe 2014
+	 */
+	private function _build_action_name($action){
+		 if(!is_null(self::$context)){
+			$action = self::$context . "_" . $action;
+		}
+		return $action;
+	 }
+
+	/**
+	 * Set Enviroment
+	 *
+	 * Esta función carga el entorno de datos en la clase.
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.0
+	 */
+	private function _set_enviroment ( ) {
+		// Post
+		$this -> data = self::_http_post_request ( );
+
+		// Get
+		$this -> _build_get_enviroment ( );
+
+    // Check translations
+    $this -> _load_translations();
+
+		// Handle Context Defaults
+		$this -> _context_defaults();
+
+		// Check Routing
+		$this -> _check_routing ( );
+
+		// Verify Routing String Formats
+		$this -> _verify_routing_strings();
+	}
+
+  /**
+   * _load_translations
+   *
+   * Carga las traducciones cuando sean requeridas, si no, continúa sin problemas.
+   *
+   * @Author Daniel Lepe
+   * @Version 1.0
+   * @Date 10/08/2015
+   */
+  private function _load_translations(){
+      if(!isset(AppConfig::$languagesCFG) or !AppConfig::$languagesCFG['allow_translations']){
+          // LOADS TRANSLATION CLASS
+          $filename = self::path ( null, array('Lib') ) . 'Untranslate.inc.php';
+      } else {
+          // LOADS TRANSLATION CLASS
+          $filename = self::path ( null, array('Lib') ) . 'Translate.inc.php';
+      }
+
+      // LOADS STATIC TRANSLATOR
+      if ( file_exists ( $filename ) ) {
+          include_once $filename;
+          if(class_exists('Translate')){
+              // VERIFICA QUE LA CONFIGURACIÓN DE LENGUAJE POR LO MENOS TENGA EL LENGUAJE POR DEFECTO DE APPCONFIG
+              if(is_null(self::$language)){
+                  Translate::set_defaults();
+              } else {
+                  Translate::$selectedLang = self::$language;
+              }
+              // FETCH TRANSLATIONS
+              Translate::load_translations();
+          }
+      } else {
+          die('Error cargando Core/LIB/Translate.inc.php');
+      }
+  }
+
+	/**
+	 * Verify Routing Strings
+	 *
+	 * Verifica que las variables de contexto, controllador y accion tengan el formato correcto.
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.0
+	 */
+	private function _verify_routing_strings(){
+		$this -> controller = ucfirst(preg_replace('/.(^[a-z])/', '', strtolower($this -> controller)));
+		$this -> action = preg_replace('/.(^[a-z])/', '', strtolower($this -> action));
+	}
+
+	/**
+	* Context Defaults
+	*
+	* Si hay un contexto, actualiza la configuración de la variable
+	*  $defaults a la configuración del contexto.
+	*
+	* @Author Daniel Lepe 2014
+	* @Version 1.0
+	*/
+	public function _context_defaults(){
+    if(!is_null(self::$context)){
+      self::$defaults = Routes::get_defaults_by_context ( self::$context );
+    }
+	}
+
+	/**
+	 * Check routing
+	 *
+	 * Verifica que las rutas de ejecución no vayan vacías,
+	 * y si lo están, carga las de los contextos o configuraciones
+	 * por defecto .
+	 *
+	 * @Author Daniel Lepe 2014
+	 */
+	private function _check_routing ( ) {
+		if ( is_null ( $this -> controller ) or $this -> controller == '' )
+			$this -> controller = ucfirst ( strtolower ( self::$defaults [ 'controller' ] ) );
+
+		if ( is_null ( $this -> action ) or $this -> action == '' )
+			$this -> action = strtolower ( self::$defaults [ 'action' ] );
+
+		$this -> action = $this -> _build_action_name($this -> action);
+
+		if ( is_null ( $this -> getAttrs ) )
+			$this -> getAttrs = array ( );
+	}
+
+	/*
+	 * Load Controller
+	 *
+	 * Busca el controlador solicitado, si no lo encuentra fisicamente, exhibe un
+	 * 404.
+	 *
+	 * Daniel Lepe 2014
+	 */
+	private function _load_controller ( ) {
+
+		if(!is_null(self::$context)){
+			$filename = self::path ( 'Controllers', array(ucfirst(strtolower(self::$context))) ) . $this -> controller . 'Controller.php';
+		} else {
+			$filename = self::path ( 'Controllers' ) . $this -> controller . 'Controller.php';
+
+		}
+
+
+		if ( file_exists ( $filename ) ) {
+
+			include_once ($filename);
+
+			if ( class_exists ( $this -> controller ) ) {
+				$this -> {$this -> controller} = new $this -> controller ( );
+			} else {
+				$this -> set_404 ( );
+			}
+
+		} else {
+			$this -> set_404 ( );
+		}
+
+	}
+
+	/*
+	 * Controller Enviroment
+	 *
+	 *  Carga los datos que todos los controladores deben llevar.
+	 * */
+	private function _controller_enviroment ( ) {
+
+			// Carga de controlador primario
+			$this -> {$this -> controller} -> data = $this -> data;
+			$this -> {$this -> controller} -> template = self::$defaults [ 'template' ];
+			$this -> {$this -> controller} -> view = $this -> action;
+			$this -> {$this -> controller} -> action = $this -> action;
+			$this -> {$this -> controller} -> controller = $this -> controller;
+			$this -> {$this -> controller} -> request = $this -> request;
+			$this -> {$this -> controller} -> get = $this -> getAttrs;
+
+			// Revisa si hay que cargar componentes
+			if(isset($this -> {$this -> controller} -> components)){
+
+				if(!is_array($this -> {$this -> controller} -> components))
+					die('$components debe ser un array');
+
+				foreach($this -> {$this -> controller} -> components as $c){
+
+					if(!is_null(self::$context)){
+
+						$local = APP::path ('Controllers' , array(ucfirst(strtolower(self::$context)), 'Components') ) . ucfirst(strtolower($c)) . 'Component.php';
+
+					} else {
+
+						$local = APP::path ( 'Controllers', array('Components') ) . ucfirst(strtolower($c)) . 'Component.php';
+
+					}
+
+					if(file_exists($local)){
+
+						if(!is_null(self::$context)){
+							$this -> {$this -> controller} -> load($c, 'Controllers', array(ucfirst(strtolower(self::$context)), 'Components'), 'Component');
+						} else {
+							$this -> {$this -> controller} -> load($c, 'Controllers', array('Components'), 'Component');
+						}
+					} else {
+						$this -> {$this -> controller} -> load($c, 'Lib', array('Controller', 'Components'), 'Component');
+					}
+
+					// PASA A LOS COMPONENTES EL CONTEXTO COMUN DE UN CONTROLADOR
+					$this -> {$this -> controller} -> {$c} -> data = $this -> data;
+					$this -> {$this -> controller} -> {$c} -> template = self::$defaults [ 'template' ];
+					$this -> {$this -> controller} -> {$c} -> view = $this -> action;
+					$this -> {$this -> controller} -> {$c} -> action = $this -> action;
+					$this -> {$this -> controller} -> {$c} -> controller = $this -> controller;
+					$this -> {$this -> controller} -> {$c} -> request = $this -> request;
+					$this -> {$this -> controller} -> {$c} -> get = $this -> getAttrs;
+
+				}
+
+			}
+
+		}
+
+	/*
+		 * Build Get Enviroment
+		 *
+		 * Construye el seudoentorno de variables enviads por Get, ademas
+		 * declara el contrlador y la accion a cargar, según la URL
+		 * predefinida.
+		 * */
+	private function _build_get_enviroment ( ) {
+		$data = self::_http_get_request ( );
+
+		if(isset(APP::$allow_pretty_url) and APP::$allow_pretty_url == false){
+
+			// ELIMINA POSIBLE DUPLICIDAD DE ORIGENES.
+			if(isset($data['request'])){
+				$this -> go_to($data['request']);
+			}
+
+			// ESTABLCE ÚNICAMENTE LO CONTENIDO EN $r
+			if(!empty($data['r'])){
+				$data['request'] = $data['r'];
+				unset($data['r']);
+			} else {
+				$data['request'] = null;
+			}
+
+		} elseif (isset(APP::$allow_pretty_url) and APP::$allow_pretty_url == true) {
+			if(isset($data['r'])){
+				$this -> go_to($data['r']);
+			}
+		}
+
+
+		$routing = Routes::rewrite ( $data );
+
+		self::$context = Routes::$context;      // CARGA CONTEXTO
+    self::$language = Routes::$language;    // CARGA LENGAUES
+
+		if(!is_array($routing))
+			return true;
+
+		foreach ( $routing  as $varname => $val){
+			$this -> {$varname} = $val;
+		}
+
+    // REQUEST ASSIGNMENT
+		$this -> request = $routing['request'];
+		self::$request_proccessed = $routing['request'];
+
+    // FULL ARRAY CONFIG
+    self::$request_full_array = array(
+        'context'       => self::$context,
+        'lang'          => (isset(self::$language['prefix']))? self::$language['prefix'] : null,
+        'controller'    => $this -> controller,
+        'action'        => $this -> action,
+        'getAttrs'      => (isset($routing['getAttrs']))? $routing['getAttrs'] : array()
+    );
+
+		return true;
+
+	}
+
+	/*
+	 * Limpia los posibles ataques de XSS en cadenas de texto
+	 */
+	static private function _security_removeXss ( $string ) {
+		if ( is_array ( $string ) ) {
+			$return = array ( );
+			foreach ( $string as $key => $val ) {
+				$return [ self::_security_removeXss ( $key ) ] = self::_security_removeXss ( $val );
+			}
+			return $return;
+		}
+		$string = htmlspecialchars ( $string );
+		return $string;
+	}
+
+	/*
+	 * HTTP Get Request
+	 *
+	 * Limpia de Xss y carga los datos obtenidos via GET
+	 *
+	 * */
+	static private function _http_get_request ( $bSecurityOn = true ) {
+		if ( $bSecurityOn ) {
+			$aGet = self::_security_removeXss ( $_GET );
+		} else {
+			$aGet = $_GET;
+		}
+		return $aGet;
+	}
+
+	/*
+	 * HTTP Post Request
+	 *
+	 * Limpia de Xss y carga los datos obtenidos via POST
+	 *
+	 * */
+	static private function _http_post_request ( $bSecurityOn = true ) {
+		if ( $bSecurityOn ) {
+			$aPost = self::_security_removeXss ( $_POST );
+		} else {
+			$aPost = $_POST;
+		}
+		return $aPost;
+	}
+
+}

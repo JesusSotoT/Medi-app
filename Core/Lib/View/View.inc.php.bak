@@ -1,0 +1,169 @@
+<?php
+	/**
+	 * VIEW Class
+	 *
+	 * Clase para el manejo de templates, vistas, vistas de error
+	 * y la inclusión de Helpers como Ajax, Form, Etc.
+	 *
+	 * @Author Daniel Lepe 2014
+	 * @Version 1.1
+	 *
+	 * */
+	class View extends AppConfig {
+
+		public $template = null;
+		public $controller = null;
+		public $view = null;
+		public $vars = array ( );
+		public $templateVars = array ( );
+
+		public $contents;
+
+		public function __construct ( ) {
+			$this -> load ( 'Html', 'Lib', array (
+				'View',
+				'Helpers'
+			), 'Helper' );
+		}
+
+		public function load_view ( ) {
+			$filename = APP::path ( 'Views', array ( $this -> controller ) ) . strtolower ( $this -> view ) . ".ctp";
+
+			if ( file_exists ( $filename ) ) {
+				extract ( $this -> vars );
+				ob_start ( );
+				include ($filename);
+				$this -> contents = ob_get_clean ( );
+			} else {
+				die ( sprintf ( 'The View file can´t be found! [%s]', $filename ) );
+			}
+
+		}
+
+
+		/**
+		 * Render 404
+		 *
+		 * Ahora permite el paso de un MENSAJE de texto para el error, y 
+         * utiliza un template distinto para cuando el request es un AJAX
+		 *
+		 * @Author Daniel Lepe 2014
+		 * @Version 1.2
+		 * */
+
+		public static function render_404 ( $msg, $full_html ) {
+			$filename = APP::path ( 'Views' ) . 404 . ".ctp";
+			if ( file_exists ( $filename ) ) {
+				include ($filename);
+			} else {
+				throw new Exception ( 
+                    sprintf ( "No se ha localizado el template: '%s'", 
+                     $filename ), 1 );
+			}
+			die ( );
+		}
+
+
+		/**
+		 *
+		 * Load Template
+		 *
+		 * @Author Daniel Lepe 2014
+		 * @Version 1.1
+		 * */
+
+		public function load_template ( ) {
+			$filename = APP::path ( 'Views' ) . strtolower ( $this -> template ) . ".ctp";
+			if ( file_exists ( $filename ) ) {
+				extract ( $this -> templateVars );
+                ob_start ( );
+				include ($filename);
+                $this -> contents = ob_get_clean ( );
+			} else {
+				throw new Exception ( sprintf ( "No se ha localizado el template: '%s'", $filename ), 1 );
+			}
+		}
+
+
+		/*
+		 * currency
+		 *
+		 * Devuleve valor numerico como moneda.
+		 *
+		 * Daniel Lepe 2014
+		 * */
+
+		public static function currency ( $number, $fractional = true ) {
+			if ( $fractional ) {
+				$number = sprintf ( '%.2f', $number );
+			}
+			while ( true ) {
+				$replaced = preg_replace ( '/(-?\d+)(\d\d\d)/', '$1,$2', $number );
+				if ( $replaced != $number ) {
+					$number = $replaced;
+				} else {
+					break;
+				}
+			}
+			return "$" . $number;
+		}
+
+
+		public function element ( $element, $aParams = array() ) {
+			foreach ( $aParams as $name => $data ) {
+				${$name} = $data;
+			}
+			include APP::path ( 'Views' ) . 'Elements/' . $element . ".ctp";
+		}
+
+
+		public static function build_element ( $element, $aParams = array() ) {
+			foreach ( $aParams as $name => $data ) {
+				${$name} = $data;
+			}
+			include APP::path ( 'Views' ) . 'Elements/' . $element . ".ctp";
+		}
+
+
+		public static function html_link ( $text, $url = array(), $options = array(), $msg = NULL ) {
+			if ( is_array ( $url ) ) {
+				if ( isset ( $url [ 1 ] ) ) {
+					$url = Self::url_format ( $url [ 0 ], $url [ 1 ] );
+				} else {
+					$url = Self::url_format ( $url [ 0 ] );
+				}
+			}
+			if ( is_array ( $options ) ) {
+				$opt_string = "";
+				foreach ( $options as $attr => $val ) {
+					$opt_string .= " $attr = '$val' ";
+				}
+			}
+			if ( $msg != NULL ) {
+				return "<a onclick='return confirm(\"$msg\")' href='$url' $opt_string>$text</a>";
+			} else {
+				return "<a href='$url' $opt_string>$text</a>";
+			}
+		}
+
+
+		public static function url_format ( $sRout, $aParametros = array(), $sUrlFormat = true ) {
+			global $aConfig;
+			$sParam = '';
+			if ( is_array ( $aParametros ) ) {
+				$aKeys = array_keys ( $aParametros );
+				foreach ( $aKeys as $sKey ) {
+					$sParam .= $sKey . '=' . $aParametros [ $sKey ] . '&';
+				}
+			}
+			$sUrl = $aConfig [ 'urls' ] [ 'base' ];
+			if ( $sUrlFormat ) {
+				$sUrl .= $sRout . '?';
+			} else {
+				$sUrl .= 'index.php?request=' . $sRout . '&';
+			}
+			return $sUrl .= $sParam;
+		}
+
+
+	}

@@ -1,0 +1,115 @@
+<html>
+<head>
+  <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+ 
+
+  <title> Medicheck </title>
+</head>
+<body>
+	<nav>
+	<a class="logo" href="index.html">
+    <img src="images/logo.png" class="logo"> </a>
+    <ul>
+        <li><a href="quienes_somos.html">Quienes somos</a></li>
+        <li><a href="unete.html">Unete al equipo</a></li>
+        <li><a href="#about">Blog</a></li>
+        <li> <a href="#doctor">Soy doctor</a></li>
+    </ul>
+  </nav>
+	<div class="container-fluid">
+    <div id="intro">
+      <div class="t-intro">
+      <h1> Somos medicheck</h1>
+      <p> Sé parte de la revolución de la salud en México </p>
+      <a href"#" class="myButton"> Unirme </a>
+      </div>
+    </div>
+  <section class="about">
+    <div class="col-md-6">
+        <h1 class="title_about">¿Qué es Medicheck?</h1>
+           <p class="text_column">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
+    </div>
+    <div class="col-md-6">
+        <video class="video" controls>
+        <source src="video/intro.mp4" type="video/mp4">
+        <source src="movie.ogg" type="video/ogg">
+        </video> 
+   </div>
+  </div>
+  <section class="benefits">
+     <h1> Beneficios </h1>
+    <div class="col-md-3 col-sm-6">
+      <img src="images/benefit1.png" class="stats">
+      <h4>Beneficio 1</h4>
+      <p class="benefit">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. </p>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <img src="images/benefit1.png" class="stats">
+      <h4>Beneficio 2</h4>
+      <p class="benefit">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. </p>
+    </div>
+      <div class="col-md-3 col-sm-6">
+      <img src="images/benefit1.png" class="stats">
+      <h4>Beneficio 3</h4>
+      <p class="benefit">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. </p>
+    </div>
+      <div class="col-md-3 col-sm-6">
+      <img src="images/benefit1.png" class="stats">
+      <h4>Beneficio 4</h4>
+      <p class="benefit">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam. </p>
+    </div>
+  </section>
+
+<section class="goals">
+  <h2> Nuestra Meta </h2>
+  <div id="goal-d"> <p class="left-d"> Queremos crear la red de doctores más grande de México y llegar a sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam </p> </div>
+</section>
+
+<section id="us">
+<div class="col-md-6" id="col1">
+<h2> Nosotros </h2>
+<img src="images/location.png" alt="" class="pic-us">
+<p class="col2-p"> Nuestra sede es la ciudad de guadalajara, considerada como el sillicon Valley de México y América Latina y.....Lorem ipsun nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.  </p>
+</div>
+
+
+<div class="col-md-6" id="col2">
+<h2> A donde vamos </h2>
+<img src="images/goals.png" alt="" class="pic-us">
+<p class="col2-p">  Medicheck fue fundado por un grupo de jóvenes doctores que....Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+</div>
+
+</section>
+<section id="contact">
+  <div class="col-sm-3"> </div>
+
+  <div class="col-sm-6"> 
+    <form role="form" action="#" class="w3-container">
+
+
+    <h4> Nombre <br> <input class="text-input" type="text" name="nombre">  </h4> <br>
+       
+    <h4> <p> Correo <br> <input class="text-input" type="text" name="correo">  </h4> <br>
+
+    <h4> Mensaje <br><br> <textarea class="textarea" name="mensaje" cols="40" rows="10"> </textarea>  </h4> <br>
+    
+     <p>    <input class="myButton" type="submit" value="Enviar">   </p> 
+  </form>
+  </div>
+  <div class="col-sm-3"> </div>
+
+</section>
+
+<div class="copyright"><strong>¿Dudas? ¡Llámanos!</strong> <br> 
+
+  <p>  44 331 176 1040  <br>
+  (01-33) 3631-9682 <br>
+  </p>
+  <img src="images/google-play.png" height= "40px" > 
+  <img src="images/ios-appstore.png" height="40px">
+  <p class="terms"> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+</div>
+	</div>
+</body>
+</html>

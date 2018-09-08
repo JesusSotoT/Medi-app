@@ -1,0 +1,111 @@
+/*+clearfix {*/
+DIV#actionMenu DIV#actionBar DIV#actionBtn DIV.actionBarH:after, DIV#actionMenu #actionBar DIV#actionBtn DIV.actionBarH DIV:after, BODY:after
+{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	font-size: 0;
+}
+DIV#actionMenu DIV#actionBar DIV#actionBtn DIV.actionBarH, DIV#actionMenu #actionBar DIV#actionBtn DIV.actionBarH DIV, BODY
+{
+	display: inline-block;
+}
+DIV#actionMenu DIV#actionBar DIV#actionBtn DIV.actionBarH, DIV#actionMenu #actionBar DIV#actionBtn DIV.actionBarH DIV, BODY
+{
+	/*\*/
+	display: block;
+	/**/
+	-height: 1px;
+}
+/*+}*/
+/*[clearfix]*/BODY
+{
+	min-height: 480px;
+}
+DIV#actionMenu
+{
+	width: 100%;
+	position: fixed;
+	background-color: #303641;
+	z-index: 3000;
+	/*+box-shadow:0px 0px 9px #303641;*/
+	-moz-box-shadow: 0px 0px 9px #303641;
+	-webkit-box-shadow: 0px 0px 9px #303641;
+	-o-box-shadow: 0px 0px 9px #303641;
+	box-shadow: 0px 0px 9px #303641;
+	margin: 0px;
+	padding: 0px;
+	bottom: 0px;
+}
+DIV#actionMenu DIV#actionBar
+{
+	width: 310px;
+	/*+placement:margin-auto 0px 0px;*/
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	left: 0px;
+	top: 0px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+DIV#actionMenu DIV#actionBar DIV#actionBtn
+{
+}
+/*[clearfix]*/DIV#actionMenu DIV#actionBar DIV#actionBtn DIV.actionBarH
+{
+}
+/*[clearfix]*/DIV#actionMenu #actionBar DIV#actionBtn DIV.actionBarH DIV
+{
+	/*+placement:float-left 0px 0px;*/
+	float: left;
+	position: relative;
+	left: 0px;
+	top: 0px;
+	margin-right: 6px;
+	margin-left: 6px;
+}
+DIV#actionMenu #actionBar DIV#actionBtn DIV.actionBarH DIV:last-child
+{
+	/*+placement:float-right 0px 0px;*/
+	float: right;
+	position: relative;
+	left: 0px;
+	top: 0px;
+}
+DIV#actionMenu #actionBar DIV#actionBtn DIV.actionBarH DIV I
+{
+	font-size: 11pt;
+	/*+placement:shift 0px 1px;*/
+	position: relative;
+	left: 0px;
+	top: 1px;
+}
+DIV#actionMenu #actionBar DIV#actionBtn DIV.actionBarH A
+{
+	color: #AAABAE;
+}
+DIV#actionMenu DIV#actionBar UL#actionList
+{
+	/*+placement:anchor-bottom-left 0px 26px;*/
+	position: absolute;
+	left: 0px;
+	bottom: 26px;
+	background-color: #303641;
+	width: 100%;
+	/*+border-radius:7px 7px 0 0;*/
+	-moz-border-radius: 7px 7px 0 0;
+	-webkit-border-radius: 7px 7px 0 0;
+	-khtml-border-radius: 7px 7px 0 0;
+	border-radius: 7px 7px 0 0;
+	margin: 0px;
+	padding: 8px 0 0;
+	/*+box-shadow:0px -1px 6px #282828;*/
+	-moz-box-shadow: 0px -1px 6px #282828;
+	-webkit-box-shadow: 0px -1px 6px #282828;
+	-o-box-shadow: 0px -1px 6px #282828;
+	box-shadow: 0px -1px 6px #282828;
+	z-index: -3;
+}

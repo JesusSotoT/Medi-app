@@ -1,0 +1,1 @@
+<?php echo $this -> Html -> breadcrumbs(array('method' => 'ol', 'class' => 'breadcrumb'))?>

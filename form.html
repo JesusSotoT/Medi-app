@@ -1,0 +1,98 @@
+<!doctype html>
+
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medicheck</title>
+<meta name="description" content="La primera generaci贸n de consultorios inteligentes del pa铆s">
+<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<script src="dist/sweetalert-dev.js"></script>
+<link rel="stylesheet" href="dist/sweetalert.css">
+
+</head>
+
+<body>
+<div class="container-fluid" style="padding: 0px; background-color:white;"> <div id="formheader">
+  <img src="images/logo.png" id="logo-form">
+  </div>
+  
+<form name="frmContacto" method="post" action="sendbymail.php" id="formulary">
+
+    <fieldset>
+      <legend>Datos personales:</legend>
+      <hr class="formik" />
+        <label for="first-name"><strong>Nombre</strong></label><br />
+        <input name="first-name" type="text" size="20" class="text" /><br />
+
+        <label for="email"><strong>Correo electr&#243;nico</strong></label><br />
+        <input name="email" type="email" size="20" class="text" />
+          <label for="telephone"><strong>Tel&#233;fono </strong></label><br />
+        <input name="telephone" type="tel" size="20"  class="text" id="tel"/><br />
+    </fieldset>
+     <fieldset>
+      <legend>Carrera</legend>
+      <hr class="formik" />
+        <label for="select" class="choose">Posición deseada</label><br />
+      <select id="select" name="career">
+            <option value="1" selected="selected">--- Posiciones ---</option>
+            <option value="Diseñador Grafico">Diseñador Gráfico</option>
+            <option value="Mercadólogo">Mercadólogo</option>
+            <option value="Programador">Programador</option>
+
+          </select>
+
+     <label for="link" style="line-height: 25pt;">URL de likedin/portafolio </label><br />
+      <input type="url" name="linkedin" id="linkedin">
+
+    </fieldset>
+
+    <fieldset>
+      <legend>Extra</legend>
+      <hr class="formik" />
+      <p style="font-weight: bold;"> ¿Por qué te gustaría trabajar en Medicheck?</p>
+      <textarea name="comments" id="message" cols="6" rows="6"></textarea><br />
+      <label for="choose2" class="spam-protection" id="choose2">¿Cómo escuchaste de nosotros? </label><br />
+       <select id="choose2" name="choose2">
+            <option value="1" selected="selected">--- Selecciona ---</option>
+            <option value="Redes sociales"> Redes sociales</option>
+            <option value="Conocido">Conocido </option>
+            <option value="Publicidad">Publicidad </option>
+            <option value="Otro"> Otro </option>
+
+
+          </select>
+    </fieldset>
+<div class="message2">
+    
+    </div>
+    <div id="spam" action="spam1.php">
+            <label>Dejar esto en blanco</label>
+            <input type="text" id="dejarenblanco" name="dejarenblanco" />
+            <label>No cambiar esto</label>
+            <input type="text" value="http://" name="nocambiar" />
+        </div>
+<div style="width:100%; text-align:center;">
+    <button class="enterbutton"> Enviar datos</button>
+</div>
+
+
+  </form>
+
+  
+</div>
+<script>
+document.querySelector('.enterbutton').onclick = function(){
+	swal("¡Listo!", "Tu solicitud ha sido enviada", "success");
+	
+};
+</script>
+
+</body>
+</html>

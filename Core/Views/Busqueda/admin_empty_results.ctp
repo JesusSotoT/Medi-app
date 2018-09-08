@@ -1,0 +1,1 @@
+<h5>La búsqueda de "<?php echo $search ?>" no arrojó resultados.</h5>

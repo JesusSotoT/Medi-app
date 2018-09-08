@@ -1,0 +1,77 @@
+# MVC Lite | CHANGE LOG
+
+## Version 3.5.x
+
+### Version 3.5.6
+ + ImagenesBehavior Ahora permite el parámetro 'auto' en  para upload_and_attach (.., $foraign_field = 'auto') con el que obtiene el nombre del campo foráneo de la referencia de nombre desde $_FILES. Por lo que basta con colocar el nombre correcto en input de la imágen para que ésta sea correctamente vinculada. Funciona con una sóla tabla.
+
+### Version 3.5.5.1
+ + Corrige error que evitaba se actualicen los permisos de usuario.
+  + AdministradoresController.php [TO UPDATE]
+  + /Administradores/admin_permisos.ctp [TO UPDATE]
+
+### Version 3.5.5
+ + !importante: Se ha deshabilitado la utilidad de debug/breakpoint para cuando el proyecto ha sido configurado como debug = false;
+ + !importante: Se ha reducido el tiempo de espera a 5 segundos por defecto en toda la aplicación. Esto con la intención de obligarnos a optimizar el código, se puede modificar este tiempo de espera en Config.inc:
+    - AppConfig::$time_limit = [num segundos];
+ + Ahora se puede especificar si las URL´s serán recortadas, para PrettyURL o si se usarán de manera estándar.
+    - P. e: index.php?r=controller/action/data...
+ + Una vez que se ha establecido en Config.inc la variable $debug como false, ya no arroja errores de ningún tipo el software. Por lo que las notificiaciones ya no se mostrarán.
+ + Ahora se pueden configurar los siguientes parámetros desde Config.inc: (Mostrando datos por defecto en caso de no especificarlos)
+    + static $allow_pretty_url  = true;
+    + static $time_limit        = 5;
+    + static $memory_limit      = '150M';
+    + static $timezone          = "America/Mexico_City";
+
+### Version 3.5.4
+ + Ahora ImagenesBehavior permite que se le pasen atributos para obtener las imágenes con un ancho y alto definido.
+ + Ahora ImgController implementa la actualización para poder pasar via URL las dimensiones solicitadas de un gráfico.
+ + Agregada las funciones en COMMONS  url_style y supress_non_alphanumeric. Ambas aceptan un string como parámetro.
+ + Ahora se le puede pasar a FormHelper::scaffold(), un tercer parámetro para opciones de
+   create. En estas opciones se pueden establecer clases y ids para form, etc.
+
+### Version 3.5.3
+ + Se ha modificado HTMLHelper para permitir declarar un script, imágen o estilo de
+ calquier contexto, sólo hay que pasarle a la función pertinente un arreglo de opciones,
+ (segundo parámetro) con la clave 'context' especificando el contexto del que
+ se debería cargar el recurso, por ejemplo:
+ 	+ $this -> Html -> script('main');
+		// Cargaría /media/js/main.js
+	+ $this -> Html -> script('main', array('context' => 'admin'));
+		// Cargaría /media/_admin/js/main.js
+ + Se ha crado un alias para script y para css respectivamente:
+ 	+ $this -> Html -> script() = $this -> Html -> js();
+	+ $this -> Html -> css()	= $this -> Html -> style();
+
+### Version 3.5.2
+ + Se ha agregado la funcion en **$this -> MailComponent -> clear_plugin** que limpia
+   todos los registros de configuración del correo electrónico, éste se ejecuta en cada
+   ocación después de que se ha enviado un correo electrónico.
+
+### Version 3.5.1
+
+ + Ahora el plugin de Mailer permite enviar varios correos en el mismo request.
+ + Se ha agregado la siguiente funcion al componente mail:
+ 	$this -> Mail -> addAttacment("UBICACION/ARCHIVO.ZIP", "Nombre.zip");
+	para el envio de adjuntos automatizado.
+ * Ahora se puede hacer uso del helper HTML ($this -> Html -> %) para lo que
+ 	sea necesario en las vistas.
+
+### Version 3.5.0
+
+Ahora incluye un sincronizador entre bases de datos. Para poder sincronizarlas
+hay que configurar cada una de las conexiones en el archivo config.inc y modificar
+el archivo ImportadorModel para establecer la sincronización. Se espera que mas
+adelante se pueda hacer una sola configuración en el controlador Sync.
+
+Para determinar las tablas a importar primeramente hay que establecar via
+sql el esquema de importado, que debe coincidir perfectamente con el origen, y
+colocar las tablas a importar en SyncController en la variable pública $to_import.
+
+## Version 3.4.x
+
+### Version 3.4.2
+
+ + Se ha colocado en la clase abstracta Model una función para reseteo de
+	conexión de base de datos. Útil para reiniciar una conexión.
+ * Se ha agregado el archivo CHANGE.log.
